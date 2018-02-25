@@ -21,7 +21,7 @@ public class Terrain extends GameObject{
     public void removeTo(int toHeight){
         this.remove(toHeight-this.loc.getY());
     }
-    public void remove(int cut){
+    public void remove(int cut){//remove function for different colors
         loc.setY(loc.getY()+cut);
         if(cut<0){
             while(cut<0){

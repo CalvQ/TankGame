@@ -105,6 +105,9 @@ public class Tank extends GameObject{
     public void setY(int y){
         this.getLoc().setY(y);
     }
+    public int getHealth(){
+        return this.health;
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -113,7 +116,6 @@ public class Tank extends GameObject{
         if(turn){
             Color temp = g.getColor();
             g.setColor(Color.RED);
-//            g.drawLine(x, y-25, (int) (x+(2*power*Math.cos(angle))), (int) (y-(2*power*Math.sin(angle)))-25);
             g.drawLine(this.loc.getX(), this.loc.getY()-25,
                     (int) (this.loc.getX()+(2*power*Math.cos(angle))), (int) (this.loc.getY()-(2*power*Math.sin(angle)))-25);
             g.setColor(temp);
@@ -121,11 +123,9 @@ public class Tank extends GameObject{
         try{
             Image tank = ImageIO.read(new File("src/tank.gif"));
             if(red){
-//                g.drawImage(tank, x+50, y-50, -100, 50, null);
                 g.drawImage(tank, this.loc.getX()+50, this.loc.getY()-50, -100, 50, null);
 
             }else{
-//                g.drawImage(tank, x-50, y-50, 100, 50, null);
                 g.drawImage(tank, this.loc.getX()-50, this.loc.getY()-50, 100, 50, null);
             }
 

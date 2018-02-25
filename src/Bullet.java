@@ -19,9 +19,9 @@ public class Bullet extends GameObject{
         this.velY = -power*3*Math.sin(angle);
         this.type = type2;
         this.red=red;
-        if(this.type == Bullet.Ammo.AP){
+        if(this.type == Bullet.Ammo.AP){//counter for terrain ignore
             counter=25;
-        }else if(this.type == Ammo.Lazor){
+        }else if(this.type == Ammo.Lazor){//face has special velocity, counter for delay before halting in air
             counter = 20;
             this.velX = 85*2.5*Math.cos(angle);
             this.velY = -85 * 3 * Math.sin(angle);
@@ -32,14 +32,14 @@ public class Bullet extends GameObject{
         int tempX = loc.getX();
         int tempY = loc.getY();
         this.loc = new Point(tempX + (int)(velX*0.05), tempY + (int)(velY*0.05));
-        velY+=3;
+        velY+=3;//"acceleration"
     }
 
 
 
     public Explosion genExpl(){//todo lazro
         if(this.type!= Ammo.Jet && this.type!= Ammo.Lazor) {
-            if (red) {
+            if (red) { //if normal round, then see if tank is present, then generate explosion
                 Tank temp = ((Tank) GridBasedGameDriver.getDrawables().get(800));
                 if (temp.inColBox(this.loc)) {
                     this.loc.setY(temp.getLoc().getY() - 50);
@@ -56,7 +56,7 @@ public class Bullet extends GameObject{
         if(counter==0){
             if(loc.getX()==0 || loc.getX()==799) {
 
-            }else if(this.type!= Ammo.AP){
+            }else if(this.type!= Ammo.AP){//if terrain is within 20 pix of explosion, then set y to terrain height
                 int y = Terrain.getPoints().get(this.loc.getX()).getY();
                 if(-20<this.loc.getY()-y && 20>this.loc.getY()-y) {
                     this.loc.setY(y);
@@ -108,13 +108,10 @@ public class Bullet extends GameObject{
     public void draw(Graphics g) {
         try{
             if(this.type== Ammo.Jet){
-//                Image tank = ImageIO.read(new File("src/tank.gif"));
                 if(!red) {
-//                    g.drawImage(tank, loc.getX() + 50, loc.getY() - 50, -100, 50, null);
                     ((Tank)GridBasedGameDriver.getDrawables().get(800)).setX(this.loc.getX());
                     ((Tank)GridBasedGameDriver.getDrawables().get(800)).setY(this.loc.getY());
                 }else{
-//                    g.drawImage(tank, loc.getX() - 50, loc.getY() - 50, 100, 50, null);
                     ((Tank)GridBasedGameDriver.getDrawables().get(801)).setY(this.loc.getY());
                     ((Tank)GridBasedGameDriver.getDrawables().get(801)).setX(this.loc.getX());
                 }

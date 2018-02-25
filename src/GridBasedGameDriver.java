@@ -20,7 +20,7 @@ public class GridBasedGameDriver {
     private static ArrayList<Drawable> temp2 = new ArrayList<>();
     private static ArrayList<Drawable> temp3 = new ArrayList<>();
 
-	public static List<Drawable> getList(){
+	public static List<Drawable> getList(){//TODO figure out how to not do this
 	    return temp2;
     }
     public static List<Drawable> getOtherList(){
@@ -38,7 +38,6 @@ public class GridBasedGameDriver {
 	}
 
 	private void start() {
-		setUpGame();
 		setBooleans();
 
 		frame.setVisible(true);
@@ -62,8 +61,7 @@ public class GridBasedGameDriver {
 		
 		setPanel();
 		panel.requestFocusInWindow();
-		//panel.addKeyListener(l);
-		
+
 		setUpObjects();
 		t.start();
 	}
@@ -80,8 +78,6 @@ public class GridBasedGameDriver {
 	private void gameTick(){
 	    ArrayList<Drawable> temp = new ArrayList<>();
 	    temp2 = new ArrayList<>();
-
-
 
         for(Drawable dr: drawables){
             if(dr instanceof Bullet){
@@ -129,7 +125,8 @@ public class GridBasedGameDriver {
                 }
             }
         }
-        for(Drawable dr2:temp){
+
+        for(Drawable dr2:temp){//temp arrays in order to avoid concurrent modification
             if(dr2 instanceof Explosion){
                 drawables.add(dr2);
                 ((Explosion) dr2).remExpl();
@@ -154,37 +151,7 @@ public class GridBasedGameDriver {
     }
 
 	private void setPanel(){
-//	    panel.getInputMap().put(KeyStroke.getKeyStroke("V"), "v");
-//	    panel.getActionMap().put("v", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                ((Terrain)drawables.get(400)).remove(10);
-//                ((Terrain)drawables.get(401)).remove(10);
-//                ((Terrain)drawables.get(402)).remove(10);
-//                ((Terrain)drawables.get(403)).remove(10);
-//                ((Terrain)drawables.get(404)).remove(10);
-//                ((Terrain)drawables.get(405)).remove(10);
-//                ((Terrain)drawables.get(406)).remove(10);
-//                ((Terrain)drawables.get(407)).remove(10);
-//                ((Terrain)drawables.get(408)).remove(10);
-//            }
-//        });
-//        panel.getInputMap().put(KeyStroke.getKeyStroke("B"), "b");
-//        panel.getActionMap().put("b", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                ((Terrain)drawables.get(400)).remove(-10);
-//                ((Terrain)drawables.get(401)).remove(-10);
-//                ((Terrain)drawables.get(402)).remove(-10);
-//                ((Terrain)drawables.get(403)).remove(-10);
-//                ((Terrain)drawables.get(404)).remove(-10);
-//                ((Terrain)drawables.get(405)).remove(-10);
-//                ((Terrain)drawables.get(406)).remove(-10);
-//                ((Terrain)drawables.get(407)).remove(-10);
-//                ((Terrain)drawables.get(408)).remove(-10);
-//
-//            }
-//        });
+	    //Cycling of round types
         panel.getInputMap().put(KeyStroke.getKeyStroke("A"),"a");
         panel.getActionMap().put("a",new AbstractAction(){
             @Override
@@ -213,6 +180,8 @@ public class GridBasedGameDriver {
                 panel.repaint();
             }
         });
+
+        //firing listener
         panel.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -238,6 +207,7 @@ public class GridBasedGameDriver {
                 }
             }
 
+            //timer boolean updaters
             @Override
             public void keyPressed(KeyEvent e) { //L, R, U, D, PUp, PDown
                 if(!dContains()) {
@@ -297,7 +267,7 @@ public class GridBasedGameDriver {
         });
     }
 
-    private boolean dContains(){
+    private boolean dContains(){//prevents change when *drawables* contains a bullet or explosion
 	    for(Drawable dr:drawables){
 	        if(dr instanceof Bullet || dr instanceof Explosion){
 	            return true;
@@ -306,7 +276,7 @@ public class GridBasedGameDriver {
         return false;
     }
 
-	private void genTerrain(){
+	private void genTerrain(){//TODO fractal landscaping
 	    int last = 500;
 	    for(int i=0; i<panel.getWidth(); i++){
 //	        double y = (Math.exp(-0.5 * Math.pow((400 - Math.abs(400-i)),2.0)))/(Math.pow(Math.PI*2, 0.5));
@@ -324,7 +294,7 @@ public class GridBasedGameDriver {
 
 	
 	private void setUpObjects() {
-		// TODO
+		// TODO change terrain to be new size, need to change indexes of tanks
         //index 800 and 801 are tanks
         //index 801+ are temp objects(proj + explosion)
         drawables.add(new Tank(100, 0, false));
@@ -341,12 +311,15 @@ public class GridBasedGameDriver {
 			dr.draw(g);
 		}
 	}
-	private void setUpGame() {//TODO
-
-	}
 
 	private void gameOver() {
-		// TODO Auto-generated method stub
+        for(Drawable d : drawables){
+            if(d instanceof Tank){
+                if(((Tank) d).getHealth()<=0){
+                    // TODO what if tank health == 0
+                }
+            }
+        }
 
 	}
 
