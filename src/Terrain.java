@@ -62,8 +62,8 @@ public class Terrain extends GameObject{
             g.drawLine(loc.getX(), y2 + interval2, loc.getX(), y3);
         }
         g.setColor(new Color(35, 77, 16));
-        if(y3+interval3 != 600) {
-            g.drawLine(loc.getX(), y3 + interval3, loc.getX(), 600);
+        if(y3+interval3 != 900) {
+            g.drawLine(loc.getX(), y3 + interval3, loc.getX(), 900);
         }
 
         g.setColor(temp);

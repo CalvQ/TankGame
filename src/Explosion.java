@@ -31,7 +31,7 @@ public class Explosion extends GameObject{
                 radius = 50;
                 this.red = red;
                 for(int z=-5; z<6; z++){
-                    if(this.loc.getX()+z > -1 && this.loc.getX()+z<800) {
+                    if(this.loc.getX()+z > -1 && this.loc.getX()+z<1600) {
                         ((Terrain) GridBasedGameDriver.getDrawables().get(this.loc.getX() + z)).remove(-400);
                     }
                 }
@@ -49,8 +49,8 @@ public class Explosion extends GameObject{
                 if(this.loc.getX()==0){
                     this.loc.setX(1);
                 }
-                if(this.loc.getX()==799){
-                    this.loc.setX(798);
+                if(this.loc.getX()==1599){
+                    this.loc.setX(1598);
                 }
                 //todo care of making bullet with red
                 for(int i=0; i<temp; i++){
@@ -102,20 +102,20 @@ public class Explosion extends GameObject{
         if(this.type!=Bullet.Ammo.AStrike && this.type!=Bullet.Ammo.Wall && this.type!=Bullet.Ammo.Lazor) {
             for (int k = -radius/2; k < (radius/2) + 1; k++) {
                 int h = (int) Math.pow(Math.pow(radius/2, 2) - Math.pow(k, 2), 0.5);
-                if (this.loc.getX() + k < 800 && this.loc.getX() + k > 0) {
+                if (this.loc.getX() + k < 1600 && this.loc.getX() + k > 0) {
 
                     if(!red){
-                        if(((Tank)GridBasedGameDriver.getDrawables().get(801)).inColBox(new Point(
+                        if(((Tank)GridBasedGameDriver.getDrawables().get(1601)).inColBox(new Point(
                                 this.loc.getX()+k, this.loc.getY()+h
-                        )) || ((Tank)GridBasedGameDriver.getDrawables().get(801)).inColBox(new Point(
+                        )) || ((Tank)GridBasedGameDriver.getDrawables().get(1601)).inColBox(new Point(
                                 this.loc.getX()+k, this.loc.getY()-h
                         ))){
                             temp = true;
                         }
                     }else{
-                        if(((Tank)GridBasedGameDriver.getDrawables().get(800)).inColBox(new Point(
+                        if(((Tank)GridBasedGameDriver.getDrawables().get(1600)).inColBox(new Point(
                                 this.loc.getX()+k, this.loc.getY()+h
-                        )) || ((Tank)GridBasedGameDriver.getDrawables().get(800)).inColBox(new Point(
+                        )) || ((Tank)GridBasedGameDriver.getDrawables().get(1600)).inColBox(new Point(
                                 this.loc.getX()+k, this.loc.getY()-h
                         ))){
                             temp = true;
@@ -136,66 +136,61 @@ public class Explosion extends GameObject{
             }
         }
 
-        if(temp){
+        if(temp){//damage tanks
             switch(type){
                 case AP:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(20);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(20);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(801)).damage(20);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(20);
                     }
                     break;
                 case AStrike:
                     break;
                 case Cluster:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(10);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(10);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(801)).damage(10);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(10);
                     }
                     break;
                 case Snipe:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(80);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(80);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(801)).damage(80);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(80);
                     }
                     break;
                 case Wall:
                     break;
                 case Jet:
-                    if(red){
-
-                    }else{
-
-                    }
                     break;
                 case HE:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(5);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(5);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(801)).damage(5);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(5);
                     }
                     break;
                 case E:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(7);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(7);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(801)).damage(7);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(7);
                     }
                     break;
                 case Std:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(15);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(15);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(800)).damage(15);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(15);
                     }
                     break;
             }
         }
     }
 
-    public void lazRemove(){
+    public void lazRemove(){//special remove for 'Lazor'
         if(red){
 
         }else{
@@ -223,7 +218,7 @@ public class Explosion extends GameObject{
                 g.fillOval(loc.getX()-(radius/2)+(counter/2), loc.getY()-(radius/2)+(counter/2),
                         radius-counter, radius-counter);
                 break;
-            case Jet://this is bullet class
+            case Jet:
                 break;
             case Wall:
                 try{
@@ -311,17 +306,36 @@ public class Explosion extends GameObject{
                                     this.loc.getY() + (int) (0.24 * this.loc.getX()) - ((counter-25) / 5)};
                             g.fillPolygon(xPoints, yPoints, 4);
                         } else {
-                            g.setColor(new Color(5 * ((counter-25) - 50), 0, 5 * (100 - (counter-25))));
+                            g.setColor(new Color(5 * (50-((counter-25) - 50)), 0, 5 * ((counter-25) - 50)));
+                            xPoints = new int[]{this.loc.getX(), this.loc.getX(), 0, 0};
+                            yPoints = new int[]{this.loc.getY() - ((125-counter) / 5), this.loc.getY() + ((125-counter) / 5),
+                                    this.loc.getY() + (int) (0.24 * this.loc.getX()) + ((125-counter) / 5),
+                                    this.loc.getY() + (int) (0.24 * this.loc.getX()) - ((125-counter) / 5)};
+                            g.fillPolygon(xPoints, yPoints, 4);
                         }
                     } else {
                         if ((counter-25) < 51) {
                             g.setColor(new Color(5 * (counter-25), 0, 5 * (50 - (counter-25))));
+                            int length = GridBasedGameDriver.getPanel().getWidth()-this.loc.getX();
                             xPoints = new int[]{this.loc.getX(), this.loc.getX(),
                                     GridBasedGameDriver.getPanel().getWidth(), GridBasedGameDriver.getPanel().getWidth()};
+                            yPoints = new int[]{this.loc.getY() - ((counter-25) / 5), this.loc.getY() + ((counter-25) / 5),
+                                    this.loc.getY() + (int) (0.24 * length) + ((counter-25) / 5),
+                                    this.loc.getY() + (int) (0.24 * length) - ((counter-25) / 5)};
+                            g.fillPolygon(xPoints, yPoints, 4);
                         } else {
-                            g.setColor(new Color(5 * ((counter-25) - 50), 0, 5 * (100 - (counter-25))));
+                            g.setColor(new Color(5 * (50-((counter-25) - 50)), 0, 5 * ((counter-25) - 50)));
+                            int length = GridBasedGameDriver.getPanel().getWidth()-this.loc.getX();
+                            xPoints = new int[]{this.loc.getX(), this.loc.getX(),
+                                    GridBasedGameDriver.getPanel().getWidth(), GridBasedGameDriver.getPanel().getWidth()};
+                            yPoints = new int[]{this.loc.getY() - ((125-counter) / 5), this.loc.getY() + ((125-counter) / 5),
+                                    this.loc.getY() + (int) (0.24 * length) + ((125-counter) / 5),
+                                    this.loc.getY() + (int) (0.24 * length) - ((125-counter) / 5)};
+                            g.fillPolygon(xPoints, yPoints, 4);
                         }
                     }
+
+                    g.setColor(temp);
 
                 }
 

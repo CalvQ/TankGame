@@ -15,8 +15,8 @@ public class Bullet extends GameObject{
 
     public Bullet(Point loc, double angle, int power, Ammo type2, boolean red){
         super(loc);
-        this.velX = power*2.5*Math.cos(angle);
-        this.velY = -power*3*Math.sin(angle);
+        this.velX = power*2.5*Math.cos(angle) * 1.2;//1.2 multiplier for larger game space
+        this.velY = -power*3*Math.sin(angle) * 1.2;
         this.type = type2;
         this.red=red;
         if(this.type == Bullet.Ammo.AP){//counter for terrain ignore
@@ -40,13 +40,13 @@ public class Bullet extends GameObject{
     public Explosion genExpl(){//todo lazro
         if(this.type!= Ammo.Jet && this.type!= Ammo.Lazor) {
             if (red) { //if normal round, then see if tank is present, then generate explosion
-                Tank temp = ((Tank) GridBasedGameDriver.getDrawables().get(800));
+                Tank temp = ((Tank) GridBasedGameDriver.getDrawables().get(1600));
                 if (temp.inColBox(this.loc)) {
                     this.loc.setY(temp.getLoc().getY() - 50);
                     return new Explosion(this.loc, type, this.red);
                 }
             } else {
-                Tank temp = ((Tank) GridBasedGameDriver.getDrawables().get(801));
+                Tank temp = ((Tank) GridBasedGameDriver.getDrawables().get(1601));
                 if (temp.inColBox(this.loc)) {
                     this.loc.setY(temp.getLoc().getY() - 50);
                     return new Explosion(this.loc, type, this.red);
@@ -54,7 +54,7 @@ public class Bullet extends GameObject{
             }
         }
         if(counter==0){
-            if(loc.getX()==0 || loc.getX()==799) {
+            if(loc.getX()==0 || loc.getX()==1599) {
 
             }else if(this.type!= Ammo.AP){//if terrain is within 20 pix of explosion, then set y to terrain height
                 int y = Terrain.getPoints().get(this.loc.getX()).getY();
@@ -73,8 +73,8 @@ public class Bullet extends GameObject{
             this.loc.setX(0);
             return true;
         }
-        if(this.loc.getX()>=799){
-            this.loc.setX(799);
+        if(this.loc.getX()>=1599){
+            this.loc.setX(1599);
             return true;
         }
         if(this.type == Ammo.Lazor){
@@ -86,12 +86,12 @@ public class Bullet extends GameObject{
             }
         }
         if(this.type!= Ammo.Jet) {
-            if (!red) {
-                if (((Tank) GridBasedGameDriver.getDrawables().get(801)).inColBox(this.loc)) {
+            if (red) {
+                if (((Tank) GridBasedGameDriver.getDrawables().get(1600)).inColBox(this.loc)) {
                     return true;
                 }
             } else {
-                if (((Tank) GridBasedGameDriver.getDrawables().get(800)).inColBox(this.loc)) {
+                if (((Tank) GridBasedGameDriver.getDrawables().get(1601)).inColBox(this.loc)) {
                     return true;
                 }
             }
@@ -109,11 +109,11 @@ public class Bullet extends GameObject{
         try{
             if(this.type== Ammo.Jet){
                 if(!red) {
-                    ((Tank)GridBasedGameDriver.getDrawables().get(800)).setX(this.loc.getX());
-                    ((Tank)GridBasedGameDriver.getDrawables().get(800)).setY(this.loc.getY());
+                    ((Tank)GridBasedGameDriver.getDrawables().get(1600)).setX(this.loc.getX());
+                    ((Tank)GridBasedGameDriver.getDrawables().get(1600)).setY(this.loc.getY());
                 }else{
-                    ((Tank)GridBasedGameDriver.getDrawables().get(801)).setY(this.loc.getY());
-                    ((Tank)GridBasedGameDriver.getDrawables().get(801)).setX(this.loc.getX());
+                    ((Tank)GridBasedGameDriver.getDrawables().get(1601)).setY(this.loc.getY());
+                    ((Tank)GridBasedGameDriver.getDrawables().get(1601)).setX(this.loc.getX());
                 }
             }else {
                 Image bullet = ImageIO.read(new File("src/dot.gif"));

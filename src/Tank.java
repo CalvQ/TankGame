@@ -65,8 +65,8 @@ public class Tank extends GameObject{
     public void moveRight(){
         if(turn)
         this.loc.incX(1);
-        if(this.loc.getX()>=799){
-            this.loc.setX(799);
+        if(this.loc.getX()>=1599){
+            this.loc.setX(1599);
         }
         int y = Terrain.getPoints().get(this.loc.getX()).getY();
         if(y-this.loc.getY()>-14) {
@@ -166,7 +166,7 @@ public class Tank extends GameObject{
                 if (!red) {
                     g.drawImage(symbol, 0, 0, 40, 40, null);
                 } else {
-                    g.drawImage(symbol, 760, 0, 40, 40, null);
+                    g.drawImage(symbol, 1560, 0, 40, 40, null);
                 }
             }
         }catch (IOException e ){

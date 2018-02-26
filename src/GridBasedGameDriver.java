@@ -51,7 +51,7 @@ public class GridBasedGameDriver {
 			
 		};
 		t = new Timer(10, e -> gameTick());
-		panel.setPreferredSize(new Dimension(800,800));//1600, 900
+		panel.setPreferredSize(new Dimension(1600,900));//1600, 900
         panel.setBackground(new Color(0,200, 200));
 
         frame.add(panel);
@@ -196,13 +196,13 @@ public class GridBasedGameDriver {
 //                                ((Tank) dr).toggleTurn();
 //                            }
 //                        }
-                        if (((Tank) drawables.get(800)).getTurn()) {
-                            drawables.add(((Tank) drawables.get(800)).fire());
+                        if (((Tank) drawables.get(1600)).getTurn()) {
+                            drawables.add(((Tank) drawables.get(1600)).fire());
                         } else {
-                            drawables.add(((Tank) drawables.get(801)).fire());
+                            drawables.add(((Tank) drawables.get(1601)).fire());
                         }
-                        ((Tank) drawables.get(800)).toggleTurn();
-                        ((Tank) drawables.get(801)).toggleTurn();
+                        ((Tank) drawables.get(1600)).toggleTurn();
+                        ((Tank) drawables.get(1601)).toggleTurn();
                     }
                 }
             }
@@ -277,7 +277,7 @@ public class GridBasedGameDriver {
     }
 
 	private void genTerrain(){//TODO fractal landscaping
-	    int last = 500;
+	    int last = 700;
 	    for(int i=0; i<panel.getWidth(); i++){
 //	        double y = (Math.exp(-0.5 * Math.pow((400 - Math.abs(400-i)),2.0)))/(Math.pow(Math.PI*2, 0.5));
 //	        System.out.println(y);
@@ -295,15 +295,15 @@ public class GridBasedGameDriver {
 	
 	private void setUpObjects() {
 		// TODO change terrain to be new size, need to change indexes of tanks
-        //index 800 and 801 are tanks
-        //index 801+ are temp objects(proj + explosion)
+        //index 1600 and 1601 are tanks
+        //index 1601+ are temp objects(proj + explosion)
         drawables.add(new Tank(100, 0, false));
-        drawables.add(new Tank(700, Math.PI, true));
+        drawables.add(new Tank(1500, Math.PI, true));
         initTurn();
 	}
 
 	private void initTurn(){
-        ((Tank) (drawables.get((int) (Math.random()*2)+800))).toggleTurn();
+        ((Tank) (drawables.get((int) (Math.random()*2)+1600))).toggleTurn();
     }
 
 	private void drawGame(Graphics g) {
