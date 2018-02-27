@@ -22,7 +22,7 @@ public class Bullet extends GameObject{
         if(this.type == Bullet.Ammo.AP){//counter for terrain ignore
             counter=25;
         }else if(this.type == Ammo.Lazor){//face has special velocity, counter for delay before halting in air
-            counter = 20;
+            counter = 40;
             this.velX = 85*2.5*Math.cos(angle);
             this.velY = -85 * 3 * Math.sin(angle);
         }

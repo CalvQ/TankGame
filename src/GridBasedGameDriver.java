@@ -276,25 +276,48 @@ public class GridBasedGameDriver {
         return false;
     }
 
-	private void genTerrain(){//TODO fractal landscaping
-	    int last = 700;
-	    for(int i=0; i<panel.getWidth(); i++){
-//	        double y = (Math.exp(-0.5 * Math.pow((400 - Math.abs(400-i)),2.0)))/(Math.pow(Math.PI*2, 0.5));
-//	        System.out.println(y);
-//	        drawables.add(new Terrain(new Point(i, (int) (y*100) + 500)));
-            if(i<panel.getWidth()/2){
-                drawables.add(new Terrain(new Point(i, last)));
-                last -= ((int) (Math.random()*1.3));
-            }else{
-                drawables.add(new Terrain(new Point(i, last)));
-                last+= ((int) (Math.random()*1.3));
-            }
+	private void genTerrain(){ //Fractal Landscape formula
+        int[] terrain = new int[1600];
+        for(int i=0; i<terrain.length; i++){
+            terrain[i] = 700;
         }
+        range(terrain,0, terrain.length-1);
+
+        for(int i=0; i<terrain.length; i++){
+            drawables.add(new Terrain(new Point(i, terrain[i])));
+        }
+    }
+
+    private void range(int terrain[], int i, int j){
+	    // Formula - choose random point, add random amount, adjust slope
+        // Recurse over separate parts until desired resolution
+
+	    int rand = (j-i)/10;
+	    if(rand>200){
+	        rand=200;
+        }
+
+        int mid = (i+j)/2 + (int) ((Math.random()*rand)-rand/2);
+        terrain[mid] += (int) ((Math.random()*rand*2)-rand);
+
+        double slope1 = (terrain[mid] + 0.0 -terrain[i])/(mid-i + 0.0);
+        double slope2 = -1 * (terrain[j]- 0.0 - terrain[mid])/(j-mid + 0.0);
+
+        for(int a = i; a<mid; a++){
+            terrain[a] = ((int)(slope1 * (a-i))) + terrain[i];
+        }
+        for(int b=j; b>mid; b--){
+            terrain[b] = ((int)(slope2 * (j-b))) + terrain[j];
+        }
+
+        if(mid-i>5)
+            range(terrain, i, mid);
+        if(j-mid>5)
+            range(terrain, mid, j);
     }
 
 	
 	private void setUpObjects() {
-		// TODO change terrain to be new size, need to change indexes of tanks
         //index 1600 and 1601 are tanks
         //index 1601+ are temp objects(proj + explosion)
         drawables.add(new Tank(100, 0, false));
