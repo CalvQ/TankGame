@@ -19,12 +19,15 @@ public class Bullet extends GameObject{
         this.velY = -power*3*Math.sin(angle) * 1.2;
         this.type = type2;
         this.red=red;
-        if(this.type == Bullet.Ammo.AP){//counter for terrain ignore
+        if(this.type == Ammo.AP){//counter for terrain ignore
             counter=25;
         }else if(this.type == Ammo.Lazor){//face has special velocity, counter for delay before halting in air
             counter = 40;
             this.velX = 85*2.5*Math.cos(angle);
             this.velY = -85 * 3 * Math.sin(angle);
+        }else if(this.type == Ammo.Jet){
+            this.velX = power * 1.5 * Math.cos(angle) * 1.2;
+            this.velY = -power * 2 * Math.sin(angle) * 1.2;
         }
     }
 
@@ -115,7 +118,14 @@ public class Bullet extends GameObject{
                     ((Tank)GridBasedGameDriver.getDrawables().get(1601)).setY(this.loc.getY());
                     ((Tank)GridBasedGameDriver.getDrawables().get(1601)).setX(this.loc.getX());
                 }
-            }else {
+            }else if(this.type == Ammo.Lazor) {
+                Image lazor = ImageIO.read(new File("src/pics/lazor.gif"));
+                if(red){
+                    g.drawImage(lazor, this.loc.getX()+30, this.loc.getY()-30, -60, 60, null);
+                }else{
+                    g.drawImage(lazor, this.loc.getX()-30, this.loc.getY()-30, 60, 60, null);
+                }
+            }else{
                 Image bullet = ImageIO.read(new File("src/dot.gif"));
                 g.drawImage(bullet, loc.getX() - 2, loc.getY() - 2, 4, 4, null);
             }
