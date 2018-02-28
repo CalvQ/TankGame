@@ -36,6 +36,10 @@ public class Tank extends GameObject{
         this.health-=dmg;
     }
 
+    public void update(){
+        this.loc.setY(Terrain.getPoints().get(this.loc.getX()).getY());
+    }
+
     public void next(){
         typesIndex++;
         if(typesIndex==9){
@@ -111,8 +115,6 @@ public class Tank extends GameObject{
 
     @Override
     public void draw(Graphics g) {
-//        int x = this.loc.getX();
-//        int y = Terrain.getPoints().get(x).getY();
         if(turn){
             Color temp = g.getColor();
             g.setColor(Color.RED);
@@ -173,8 +175,6 @@ public class Tank extends GameObject{
             System.out.println("Problem with ...");
             e.printStackTrace();
         }
-//        g.drawRect(x-51, y+2, 102, 7);
-//        g.fillRect(x-50, y+3, health, 5);
         g.drawRect(this.loc.getX()-51, this.loc.getY()+2, 102, 7);
         g.fillRect(this.loc.getX()-50, this.loc.getY()+3, health, 5);
     }
