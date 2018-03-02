@@ -20,7 +20,7 @@ public class Explosion extends GameObject{
                 this.red = red;
                 break;
             case HE:
-                radius=75;
+                radius=150;
                 color = Color.orange;
                 this.red = red;
                 break;
@@ -52,7 +52,6 @@ public class Explosion extends GameObject{
                 if(this.loc.getX()==1599){
                     this.loc.setX(1598);
                 }
-                //todo care of making bullet with red
                 for(int i=0; i<temp; i++){
                     GridBasedGameDriver.getList().add(new Bullet(new Point(this.loc.getX(), this.loc.getY()-5)
                             , Math.random()*Math.PI,
@@ -82,23 +81,7 @@ public class Explosion extends GameObject{
     }
 
     public void remExpl(){
-
-//        if(!red){
-//            if(((Tank)GridBasedGameDriver.getDrawables().get(801)).inColBox(this.loc)){
-//                System.out.println("801");
-//                return true;
-//            }
-//        }else{
-//            if(((Tank)GridBasedGameDriver.getDrawables().get(800)).inColBox(this.loc)){
-//                System.out.println("800");
-//                return true;
-//            }
-//        }
         boolean temp = false;
-
-//        if(this.type== Bullet.Ammo.Lazor){
-//            lazRemove();
-//        }
         if(this.type!=Bullet.Ammo.AStrike && this.type!=Bullet.Ammo.Wall && this.type!=Bullet.Ammo.Lazor) {
             for (int k = -radius/2; k < (radius/2) + 1; k++) {
                 int h = (int) Math.pow(Math.pow(radius/2, 2) - Math.pow(k, 2), 0.5);
@@ -156,9 +139,9 @@ public class Explosion extends GameObject{
                     break;
                 case Snipe:
                     if(red){
-                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(80);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(65);
                     }else{
-                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(80);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(65);
                     }
                     break;
                 case Wall:
@@ -188,20 +171,51 @@ public class Explosion extends GameObject{
                     break;
             }
         }
+
+        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).update();
+        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).update();
     }
 
-    public void lazRemove(){//special remove for 'Lazor'
+    private void lazRemove(){//special remove for 'Lazor'
         if(red){
+            for(int i=this.loc.getX(); i>-1; i--){
+                //equation: this.loc.getY() + 10 - (0.24 * i) for lower
+               int y =  (int) (this.loc.getY() + (0.24*(this.loc.getX()-i)));
 
+                if(Terrain.getPoints().get(i).getY()>y+10){
+
+                }else if(Terrain.getPoints().get(i).getY()<y-10){
+                    ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).remove(20);
+                }else if(Terrain.getPoints().get(i).getY()>=y-10 && Terrain.getPoints().get(i).getY()<=y+10){
+                    ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).removeTo(y +10);
+                }
+            }
         }else{
+            System.out.println("here");
+            for(int i=this.loc.getX(); i<GridBasedGameDriver.getPanel().getWidth(); i++){
+                int y =  (int) (this.loc.getY() + (0.24*(i-this.loc.getX())));
 
+                if(Terrain.getPoints().get(i).getY()>y+10){
+                    System.out.println(Terrain.getPoints().get(i).getY());
+                    System.out.println(y);
+                }else if(Terrain.getPoints().get(i).getY()<y-10){
+                    ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).remove(20);
+                }else if(Terrain.getPoints().get(i).getY()>=y-10 && Terrain.getPoints().get(i).getY()<y+10){
+                    ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).removeTo(y+10);
+                }
+            }
         }
+
+        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).update();
+        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).update();
     }
 
     public void tick(){
         counter++;
+        if(this.type == Bullet.Ammo.HE){//HE part to tick explosion faster
+            counter++;
+        }
     }
-
     public boolean remove(){
         return counter>radius;
     }
@@ -246,22 +260,30 @@ public class Explosion extends GameObject{
                     g.fillOval(loc.getX()-(radius/2)+(counter/2), loc.getY()-(radius/2)+(counter/2),
                             radius-counter, radius-counter);
                 }
-                if((this.loc.getX()-40)/3==counter){
-                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(3*counter, 85)
+                if((this.loc.getX()-80)/6==counter){
+                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(6*counter, 85)
                             , 0, 0, Bullet.Ammo.E, red));
                 }
-                if((this.loc.getX())/3==counter){
-                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(3*counter, 85)
+                if((this.loc.getX()-40)/6==counter){
+                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(6*counter, 85)
                             , 0, 0, Bullet.Ammo.E, red));
                 }
-                if((this.loc.getX()+40)/3==counter){
-                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(3*counter, 85)
+                if((this.loc.getX())/6==counter){
+                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(6*counter, 85)
+                            , 0, 0, Bullet.Ammo.E, red));
+                }
+                if((this.loc.getX()+40)/6==counter){
+                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(6*counter, 85)
+                            , 0, 0, Bullet.Ammo.E, red));
+                }
+                if((this.loc.getX()+80)/6==counter){
+                    GridBasedGameDriver.getOtherList().add(new Bullet(new Point(6*counter, 85)
                             , 0, 0, Bullet.Ammo.E, red));
                 }
 
                 try{
                     Image plane = ImageIO.read(new File("src/pics/plane.gif"));
-                    g.drawImage(plane, 3*counter+30, 65, -60, 20, null);
+                    g.drawImage(plane, 6*counter+30, 65, -60, 20, null);
                 }catch (IOException e){
                     System.out.println("Problem with ...");
                     e.printStackTrace();
@@ -280,13 +302,15 @@ public class Explosion extends GameObject{
                 //find the slope, and then draw line
                 if(red){
                     Color temp = g.getColor();
-                    g.setColor(new Color(150, 0, 0));
+//                    g.setColor(new Color(150, 0, 0));
+                    g.setColor(Color.BLACK);
                     g.drawLine(this.loc.getX(), this.loc.getY(), 0, this.loc.getY() + (int) (0.24 * this.loc.getX()));
                     g.setColor(temp);
                 }else{
                     int length = GridBasedGameDriver.getPanel().getWidth()-this.loc.getX();
                     Color temp = g.getColor();
-                    g.setColor(new Color(150, 0, 0));
+//                    g.setColor(new Color(150, 0, 0));
+                    g.setColor(Color.BLACK);
                     g.drawLine(this.loc.getX(), this.loc.getY(), GridBasedGameDriver.getPanel().getWidth(),
                             this.loc.getY() + (int) (length*0.24));
                     g.setColor(temp);
@@ -298,6 +322,9 @@ public class Explosion extends GameObject{
                     int[] xPoints;
                     int[] yPoints;
                     if (red) {
+                        if(counter-25 == 50){
+                            lazRemove();
+                        }
                         if (counter-25 < 51) {
                             g.setColor(new Color(5 * (counter-25), 0, 5 * (50 - (counter-25))));
                             xPoints = new int[]{this.loc.getX(), this.loc.getX(), 0, 0};
@@ -314,6 +341,9 @@ public class Explosion extends GameObject{
                             g.fillPolygon(xPoints, yPoints, 4);
                         }
                     } else {
+                        if(counter-25 == 50){
+                            lazRemove();
+                        }
                         if ((counter-25) < 51) {
                             g.setColor(new Color(5 * (counter-25), 0, 5 * (50 - (counter-25))));
                             int length = GridBasedGameDriver.getPanel().getWidth()-this.loc.getX();
