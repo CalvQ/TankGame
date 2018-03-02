@@ -34,6 +34,9 @@ public class Tank extends GameObject{
 
     public void damage(int dmg){
         this.health-=dmg;
+        if(this.health<0){
+            this.health=0;
+        }
     }
 
     public void update(){
@@ -176,6 +179,9 @@ public class Tank extends GameObject{
             e.printStackTrace();
         }
         g.drawRect(this.loc.getX()-51, this.loc.getY()+2, 102, 7);
+        Color temp = g.getColor();
+        g.setColor(new Color((int)(2.5 * (100-health)), 0, 0));
         g.fillRect(this.loc.getX()-50, this.loc.getY()+3, health, 5);
+        g.setColor(temp);
     }
 }
