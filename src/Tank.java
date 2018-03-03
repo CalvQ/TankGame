@@ -12,6 +12,7 @@ public class Tank extends GameObject{
     private Bullet.Ammo[] types = {Bullet.Ammo.AP, Bullet.Ammo.Cluster, Bullet.Ammo.HE
             , Bullet.Ammo.Jet, Bullet.Ammo.Snipe, Bullet.Ammo.Wall, Bullet.Ammo.AStrike, Bullet.Ammo.Std, Bullet.Ammo.Lazor};
     private int typesIndex=0;
+    private int fuel;//0-200
 
     public Tank(int x, double angle, boolean color){
         super(new Point(x, 0));
@@ -21,6 +22,7 @@ public class Tank extends GameObject{
         this.red = color;
         this.power = 100;
         this.loc.setY(Terrain.getPoints().get(this.loc.getX()).getY());
+        this.fuel = 200;
     }
 
     public Bullet fire(){
@@ -57,29 +59,35 @@ public class Tank extends GameObject{
     }
 
     public void moveLeft(){
-        if(turn)
-        this.loc.incX(-1);
-        if(this.loc.getX()<=0){
-            this.loc.setX(0);
-        }
-        int y = Terrain.getPoints().get(this.loc.getX()).getY();
-        if(y-this.loc.getY()>-14) {
-            this.loc.setY(y);
-        }else{
-            this.loc.incX(1);
+        if(fuel>0) {
+            if (turn)
+                this.loc.incX(-1);
+            if (this.loc.getX() <= 0) {
+                this.loc.setX(0);
+            }
+            int y = Terrain.getPoints().get(this.loc.getX()).getY();
+            if (y - this.loc.getY() > -14) {
+                this.loc.setY(y);
+                fuel--;
+            } else {
+                this.loc.incX(1);
+            }
         }
     }
     public void moveRight(){
-        if(turn)
-        this.loc.incX(1);
-        if(this.loc.getX()>=1599){
-            this.loc.setX(1599);
-        }
-        int y = Terrain.getPoints().get(this.loc.getX()).getY();
-        if(y-this.loc.getY()>-14) {
-            this.loc.setY(y);
-        }else {
-            this.loc.incX(-1);
+        if(fuel>0) {
+            if (turn)
+                this.loc.incX(1);
+            if (this.loc.getX() >= 1599) {
+                this.loc.setX(1599);
+            }
+            int y = Terrain.getPoints().get(this.loc.getX()).getY();
+            if (y - this.loc.getY() > -14) {
+                this.loc.setY(y);
+                fuel--;
+            } else {
+                this.loc.incX(-1);
+            }
         }
     }
     public void power(int dp){
@@ -114,6 +122,9 @@ public class Tank extends GameObject{
     }
     public int getHealth(){
         return this.health;
+    }
+    public void addFuel(int dFuel){
+        this.fuel+=dFuel;
     }
 
     @Override
@@ -179,9 +190,12 @@ public class Tank extends GameObject{
             e.printStackTrace();
         }
         g.drawRect(this.loc.getX()-51, this.loc.getY()+2, 102, 7);
+        g.drawRect(this.loc.getX()-51, this.loc.getY()+10, 102, 7);
         Color temp = g.getColor();
         g.setColor(new Color((int)(2.5 * (100-health)), 0, 0));
         g.fillRect(this.loc.getX()-50, this.loc.getY()+3, health, 5);
+        g.setColor(Color.yellow);
+        g.fillRect(this.loc.getX()-51, this.loc.getY()+11, fuel/2, 5);
         g.setColor(temp);
     }
 }

@@ -10,7 +10,7 @@ public class Explosion extends GameObject{
     private int counter = 0;
     private boolean red;
 
-    public Explosion(Point loc, Bullet.Ammo type2, boolean red){//Jet, Snipe, HE, AP, Cluster, Wall, AStrike,Strd
+    Explosion(Point loc, Bullet.Ammo type2, boolean red){//Jet, Snipe, HE, AP, Cluster, Wall, AStrike,Strd
         super(loc);
         this.type = type2;
         switch (type){
@@ -105,13 +105,10 @@ public class Explosion extends GameObject{
                         }
                     }
 
-                    if(Terrain.getPoints().get(this.loc.getX()+k).getY()>this.loc.getY()+h){
-
-                    }else if(Terrain.getPoints().get(this.loc.getX()+k).getY()<this.loc.getY()-h){
-
+                    if(Terrain.getPoints().get(this.loc.getX()+k).getY()<this.loc.getY()-h){
                         ((Terrain) (GridBasedGameDriver.getDrawables().get(this.loc.getX() + k))).remove(2*h);
-                    }else{
-
+                    }else if(Terrain.getPoints().get(this.loc.getX()+k).getY()<=this.loc.getY()+h &&
+                            Terrain.getPoints().get(this.loc.getX()+k).getY()>=this.loc.getY()-h){
                         ((Terrain) (GridBasedGameDriver.getDrawables().get(this.loc.getX() + k))).
                                 removeTo(this.loc.getY() + h);
                     }
@@ -124,8 +121,10 @@ public class Explosion extends GameObject{
                 case AP:
                     if(red){
                         ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(20);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).addFuel(40);
                     }else{
                         ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(20);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).addFuel(40);
                     }
                     break;
                 case AStrike:
@@ -133,15 +132,19 @@ public class Explosion extends GameObject{
                 case Cluster:
                     if(red){
                         ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(10);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).addFuel(50);
                     }else{
                         ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(10);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).addFuel(50);
                     }
                     break;
                 case Snipe:
                     if(red){
                         ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(65);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).addFuel(80);
                     }else{
                         ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(65);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).addFuel(80);
                     }
                     break;
                 case Wall:
@@ -151,22 +154,28 @@ public class Explosion extends GameObject{
                 case HE:
                     if(red){
                         ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(5);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).addFuel(20);
                     }else{
                         ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(5);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).addFuel(20);
                     }
                     break;
                 case E:
                     if(red){
                         ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(7);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).addFuel(10);
                     }else{
                         ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(7);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).addFuel(10);
                     }
                     break;
                 case Std:
                     if(red){
                         ((Tank)GridBasedGameDriver.getDrawables().get(1600)).damage(15);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1601)).addFuel(20);
                     }else{
                         ((Tank)GridBasedGameDriver.getDrawables().get(1601)).damage(15);
+                        ((Tank)GridBasedGameDriver.getDrawables().get(1600)).addFuel(20);
                     }
                     break;
             }
@@ -182,9 +191,7 @@ public class Explosion extends GameObject{
                 //equation: this.loc.getY() + 10 - (0.24 * i) for lower
                int y =  (int) (this.loc.getY() + (0.24*(this.loc.getX()-i)));
 
-                if(Terrain.getPoints().get(i).getY()>y+10){
-
-                }else if(Terrain.getPoints().get(i).getY()<y-10){
+                if(Terrain.getPoints().get(i).getY()<y-10){
                     ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).remove(20);
                 }else if(Terrain.getPoints().get(i).getY()>=y-10 && Terrain.getPoints().get(i).getY()<=y+10){
                     ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).removeTo(y +10);
@@ -195,10 +202,7 @@ public class Explosion extends GameObject{
             for(int i=this.loc.getX(); i<GridBasedGameDriver.getPanel().getWidth(); i++){
                 int y =  (int) (this.loc.getY() + (0.24*(i-this.loc.getX())));
 
-                if(Terrain.getPoints().get(i).getY()>y+10){
-                    System.out.println(Terrain.getPoints().get(i).getY());
-                    System.out.println(y);
-                }else if(Terrain.getPoints().get(i).getY()<y-10){
+               if(Terrain.getPoints().get(i).getY()<y-10){
                     ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).remove(20);
                 }else if(Terrain.getPoints().get(i).getY()>=y-10 && Terrain.getPoints().get(i).getY()<y+10){
                     ((Terrain) (GridBasedGameDriver.getDrawables().get(i))).removeTo(y+10);
@@ -302,14 +306,12 @@ public class Explosion extends GameObject{
                 //find the slope, and then draw line
                 if(red){
                     Color temp = g.getColor();
-//                    g.setColor(new Color(150, 0, 0));
                     g.setColor(Color.BLACK);
                     g.drawLine(this.loc.getX(), this.loc.getY(), 0, this.loc.getY() + (int) (0.24 * this.loc.getX()));
                     g.setColor(temp);
                 }else{
                     int length = GridBasedGameDriver.getPanel().getWidth()-this.loc.getX();
                     Color temp = g.getColor();
-//                    g.setColor(new Color(150, 0, 0));
                     g.setColor(Color.BLACK);
                     g.drawLine(this.loc.getX(), this.loc.getY(), GridBasedGameDriver.getPanel().getWidth(),
                             this.loc.getY() + (int) (length*0.24));
@@ -340,7 +342,7 @@ public class Explosion extends GameObject{
                                     this.loc.getY() + (int) (0.24 * this.loc.getX()) - ((125-counter) / 5)};
                             g.fillPolygon(xPoints, yPoints, 4);
                         }
-                    } else {
+                    } else {//remove terrain at 50
                         if(counter-25 == 50){
                             lazRemove();
                         }
@@ -369,7 +371,6 @@ public class Explosion extends GameObject{
 
                 }
 
-                //remove at 50
 
                 try{//face always goes last
                     Image lazor = ImageIO.read(new File("src/pics/lazor.gif"));
