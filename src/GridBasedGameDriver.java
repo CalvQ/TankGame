@@ -185,7 +185,7 @@ public class GridBasedGameDriver {
         panel.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(!dContains()) {
+                if(dContains()) {
                     if (e.getExtendedKeyCode() == 32) {
                         setBooleans();
 //                        for(Drawable dr:drawables){//todo good but has a concurrent error
@@ -210,7 +210,7 @@ public class GridBasedGameDriver {
             //timer boolean updaters
             @Override
             public void keyPressed(KeyEvent e) { //L, R, U, D, PUp, PDown
-                if(!dContains()) {
+                if(dContains()) {
                     switch (e.getExtendedKeyCode()) {
                         case 87:
                             PUp = true;
@@ -239,7 +239,7 @@ public class GridBasedGameDriver {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if(!dContains()) {
+                if(dContains()) {
                     switch (e.getExtendedKeyCode()) {
                         case 87:
                             PUp = false;
@@ -270,10 +270,10 @@ public class GridBasedGameDriver {
     private boolean dContains(){//prevents change when *drawables* contains a bullet or explosion
 	    for(Drawable dr:drawables){
 	        if(dr instanceof Bullet || dr instanceof Explosion){
-	            return true;
+	            return false;
             }
         }
-        return false;
+        return true;
     }
 
 	private void genTerrain(){ //Fractal Landscape formula
@@ -282,9 +282,25 @@ public class GridBasedGameDriver {
             terrain[i] = 700;
         }
         range(terrain,0, terrain.length-1);
-
+        checkHeight(terrain);
         for(int i=0; i<terrain.length; i++){
             drawables.add(new Terrain(new Point(i, terrain[i])));
+        }
+    }
+
+    private void checkHeight(int terrain[]){//makes sure terrain does not go below screen too much
+	    int counter=0;
+        for(int i=0; i<terrain.length; i++){
+            if(terrain[i]>=900){
+                terrain[i] = 900;
+                counter++;
+            }else{
+                counter=0;
+            }
+            if(counter>=400){
+                range(terrain, 0, terrain.length-1);
+                i=0;
+            }
         }
     }
 
@@ -292,10 +308,10 @@ public class GridBasedGameDriver {
 	    // Formula - choose random point, add random amount, adjust slope
         // Recurse over separate parts until desired resolution
 
-	    int rand = (j-i)/10;
-	    if(rand>200){
-	        rand=200;
-        }
+	    int rand = (j-i)/5;
+//	    if(rand>200){
+//	        rand=200;
+//        }
 
         int mid = (i+j)/2 + (int) ((Math.random()*rand)-rand/2);
         terrain[mid] += (int) ((Math.random()*rand*2)-rand);
@@ -310,9 +326,9 @@ public class GridBasedGameDriver {
             terrain[b] = ((int)(slope2 * (j-b))) + terrain[j];
         }
 
-        if(mid-i>5)
+        if(mid-i>1)
             range(terrain, i, mid);
-        if(j-mid>5)
+        if(j-mid>1)
             range(terrain, mid, j);
     }
 
