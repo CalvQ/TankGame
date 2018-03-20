@@ -85,7 +85,7 @@ public class DrawChar {//bounds for char: 10x20
         Color temp = g.getColor();
         g.setColor(Color.black);
 
-        
+
         g.setColor(temp);
     }
 }

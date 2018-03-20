@@ -309,9 +309,6 @@ public class GridBasedGameDriver {
         // Recurse over separate parts until desired resolution
 
 	    int rand = (j-i)/5;
-//	    if(rand>200){
-//	        rand=200;
-//        }
 
         int mid = (i+j)/2 + (int) ((Math.random()*rand)-rand/2);
         terrain[mid] += (int) ((Math.random()*rand*2)-rand);
