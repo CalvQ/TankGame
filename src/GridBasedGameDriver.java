@@ -20,16 +20,16 @@ public class GridBasedGameDriver {
     private static ArrayList<Drawable> temp2 = new ArrayList<>();
     private static ArrayList<Drawable> temp3 = new ArrayList<>();
 
-	public static List<Drawable> getList(){//TODO figure out how to not do this
+    static List<Drawable> getList(){//TODO figure out how to not do this
 	    return temp2;
     }
-    public static List<Drawable> getOtherList(){
+    static List<Drawable> getOtherList(){
 	    return temp3;
     }
-    public static List<Drawable> getDrawables(){
+    static List<Drawable> getDrawables(){
 	    return drawables;
     }
-    public static JPanel getPanel(){
+    static JPanel getPanel(){
 	    return panel;
     }
 
