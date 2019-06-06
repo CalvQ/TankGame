@@ -20,6 +20,8 @@ public class GridBasedGameDriver {
     private static ArrayList<Drawable> temp2 = new ArrayList<>();
     private static ArrayList<Drawable> temp3 = new ArrayList<>();
 
+    private DrawChar numDraw = new DrawChar();
+
     static List<Drawable> getList(){//TODO figure out how to not do this
 	    return temp2;
     }
@@ -46,7 +48,7 @@ public class GridBasedGameDriver {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				drawGame(g);
+                drawGame(g);
 			}
 			
 		};
@@ -346,6 +348,7 @@ public class GridBasedGameDriver {
 		for(Drawable dr:drawables) {
 			dr.draw(g);
 		}
+		numDraw.drawInt(1234567890, new Point(110, 110), g);//TODO --> Debugging color setter
 	}
 
 	private void gameOver() {
