@@ -1,91 +1,143 @@
 import java.awt.*;
 
-public class DrawChar {//bounds for char: 10x20
+class DrawChar {
     DrawChar(){
         super();
     }
 
-    //always upper-left corner = x,y
-
-    public static void draw1(Graphics g, int x, int y){
+    //drawing components for digital-clock style
+    private void drawVertical(Point p, Graphics g){
         Color temp = g.getColor();
-        g.setColor(Color.black);
-
-        g.fillRect(x+4, y+4, 2, 12);
-        g.fillRect(x+3, y+14, 4, 2);
-
+        g.setColor(Color.BLACK);
+        int[] xPoints = {p.getX(), p.getX()+1, p.getX()+2, p.getX()+2, p.getX()+1, p.getX()};
+        int[] yPoints = {p.getY()+1, p.getY(), p.getY()+1, p.getY()+8, p.getY()+9, p.getY()+8};
+        g.fillPolygon(xPoints, yPoints, 6);
         g.setColor(temp);
     }
-    public static void draw2(Graphics g, int x, int y){
+    private void drawHorizontal(Point p, Graphics g){
         Color temp = g.getColor();
-        g.setColor(Color.black);
-
-        g.fillArc(x+5, y, 5, 6, -90, 180);
-        g.fillRect(x+2, y, 6, 3);
-
-        int[] xPoints = {x+2, x+2, x+8, x+8};
-        int[] yPoints = {y+15, y+12, y+3, y+6};
-        g.fillPolygon(xPoints, yPoints, 4);
-
-        g.fillRect(x+2, y+12, 8 ,3);
-
+        g.setColor(Color.BLACK);
+        int[] xPoints = {p.getX(), p.getX()+1, p.getX()+8, p.getX()+9, p.getX()+8, p.getX()+1};
+        int[] yPoints = {p.getY()+1, p.getY(), p.getY(), p.getY()+1, p.getY()+2, p.getY()+2};
+        g.fillPolygon(xPoints, yPoints, 6);
         g.setColor(temp);
     }
-    public static void draw3(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
 
-
-
-        g.setColor(temp);
+    void drawInt(int num, Point p, Graphics g){//Bounding box per character: 10x20
+        String out = Integer.toString(num);
+        for(int x = 0; x<out.length(); x++){
+            switch(out.charAt(x)){
+                case '1':
+                    drawOne(p,g);
+                    p.incX(10);
+                    break;
+                case '2':
+                    drawTwo(p,g);
+                    p.incX(10);
+                    break;
+                case '3':
+                    drawThree(p,g);
+                    p.incX(10);
+                    break;
+                case '4':
+                    drawFour(p,g);
+                    p.incX(10);
+                    break;
+                case '5':
+                    drawFive(p,g);
+                    p.incX(10);
+                    break;
+                case '6':
+                    drawSix(p,g);
+                    p.incX(10);
+                    break;
+                case '7':
+                    drawSeven(p,g);
+                    p.incX(10);
+                    break;
+                case '8':
+                    drawEight(p,g);
+                    p.incX(10);
+                    break;
+                case '9':
+                    drawNine(p,g);
+                    p.incX(10);
+                    break;
+                case '0':
+                    drawZero(p,g);
+                    p.incX(10);
+                    break;
+            }
+        }
     }
-    public static void draw4(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
 
-
-        g.setColor(temp);
+    private void drawZero(Point p, Graphics g){
+        charLoop(p, g);
     }
-    public static void draw5(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
-
-
-        g.setColor(temp);
+    private void drawOne(Point p, Graphics g){
+        drawVertical(new Point(p.getX()+7, p.getY()),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
     }
-    public static void draw6(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
-
-
-        g.setColor(temp);
+    private void drawTwo(Point p, Graphics g){
+        drawHorizontal(p,g);
+        drawVertical(new Point(p.getX()+7, p.getY()),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9),g);
+        drawVertical(new Point(p.getX(), p.getY()+10),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+18),g);
     }
-    public static void draw7(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
-
-
-        g.setColor(temp);
+    private void drawThree(Point p, Graphics g){
+        drawHorizontal(p,g);
+        drawVertical(new Point(p.getX()+7, p.getY()),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+18),g);
     }
-    public static void draw8(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
-
-
-        g.setColor(temp);
+    private void drawFour(Point p, Graphics g){
+        drawVertical(p,g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9),g);
+        drawVertical(new Point(p.getX()+7, p.getY()),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
     }
-    public static void draw9(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
-
-
-        g.setColor(temp);
+    private void drawFive(Point p, Graphics g){
+        drawHorizontal(p,g);
+        drawVertical(p,g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+18),g);
     }
-    public static void drawInfin(Graphics g, int x, int y){
-        Color temp = g.getColor();
-        g.setColor(Color.black);
-
-
-        g.setColor(temp);
+    private void drawSix(Point p, Graphics g){
+        drawHorizontal(p,g);
+        drawVertical(p,g);
+        drawVertical(new Point(p.getX(), p.getY()+10),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+18),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9),g);
     }
+    private void drawSeven(Point p, Graphics g){
+        drawHorizontal(p,g);
+        drawVertical(new Point(p.getX()+7, p.getY()),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
+    }
+    private void drawEight(Point p, Graphics g){
+        charLoop(p, g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9),g);
+    }
+
+    private void charLoop(Point p, Graphics g) {
+        drawHorizontal(p,g);
+        drawVertical(p,g);
+        drawVertical(new Point(p.getX(), p.getY()+10),g);
+        drawHorizontal(new Point(p.getX(), p.getY()+18),g);
+        drawVertical(new Point(p.getX()+7, p.getY()),g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10),g);
+    }
+
+    private void drawNine(Point p, Graphics g){
+        drawHorizontal(p,g);
+        drawVertical(p,g);
+        drawVertical(new Point(p.getX()+7, p.getY()), g);
+        drawVertical(new Point(p.getX()+7, p.getY()+10), g);
+        drawHorizontal(new Point(p.getX(), p.getY()+9), g);
+    }
+
 }
